@@ -14,16 +14,291 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      hero_slides: {
+        Row: {
+          created_at: string
+          cta_href: string
+          cta_label: string
+          eyebrow: string
+          id: string
+          image_url: string
+          is_active: boolean
+          sort_order: number
+          subtitle: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          cta_href?: string
+          cta_label?: string
+          eyebrow?: string
+          id?: string
+          image_url?: string
+          is_active?: boolean
+          sort_order?: number
+          subtitle?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          cta_href?: string
+          cta_label?: string
+          eyebrow?: string
+          id?: string
+          image_url?: string
+          is_active?: boolean
+          sort_order?: number
+          subtitle?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      order_items: {
+        Row: {
+          created_at: string
+          id: string
+          order_id: string
+          product_id: string | null
+          product_name: string
+          quantity: number
+          unit_price: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          order_id: string
+          product_id?: string | null
+          product_name: string
+          quantity?: number
+          unit_price?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          order_id?: string
+          product_id?: string | null
+          product_name?: string
+          quantity?: number
+          unit_price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_items_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_items_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orders: {
+        Row: {
+          address: string
+          city: string
+          created_at: string
+          customer_name: string
+          email: string
+          id: string
+          notes: string
+          order_number: string
+          payment_method: string
+          phone: string
+          pincode: string
+          status: string
+          total: number
+          updated_at: string
+        }
+        Insert: {
+          address?: string
+          city?: string
+          created_at?: string
+          customer_name: string
+          email?: string
+          id?: string
+          notes?: string
+          order_number?: string
+          payment_method?: string
+          phone: string
+          pincode?: string
+          status?: string
+          total?: number
+          updated_at?: string
+        }
+        Update: {
+          address?: string
+          city?: string
+          created_at?: string
+          customer_name?: string
+          email?: string
+          id?: string
+          notes?: string
+          order_number?: string
+          payment_method?: string
+          phone?: string
+          pincode?: string
+          status?: string
+          total?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      products: {
+        Row: {
+          category: string
+          compare_at_price: number | null
+          created_at: string
+          description: string
+          featured: boolean
+          gallery: string[]
+          hair_color: string | null
+          hair_length: string | null
+          id: string
+          image_url: string
+          is_active: boolean
+          name: string
+          price: number
+          slug: string
+          sort_order: number
+          stock: number
+          updated_at: string
+        }
+        Insert: {
+          category?: string
+          compare_at_price?: number | null
+          created_at?: string
+          description?: string
+          featured?: boolean
+          gallery?: string[]
+          hair_color?: string | null
+          hair_length?: string | null
+          id?: string
+          image_url?: string
+          is_active?: boolean
+          name: string
+          price?: number
+          slug: string
+          sort_order?: number
+          stock?: number
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          compare_at_price?: number | null
+          created_at?: string
+          description?: string
+          featured?: boolean
+          gallery?: string[]
+          hair_color?: string | null
+          hair_length?: string | null
+          id?: string
+          image_url?: string
+          is_active?: boolean
+          name?: string
+          price?: number
+          slug?: string
+          sort_order?: number
+          stock?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      site_settings: {
+        Row: {
+          address: string
+          announcement: string
+          announcement_active: boolean
+          email: string
+          id: number
+          phone: string
+          salon_name: string
+          tagline: string
+          theme_accent: string
+          theme_background: string
+          theme_name: string
+          theme_primary: string
+          updated_at: string
+          whatsapp: string
+        }
+        Insert: {
+          address?: string
+          announcement?: string
+          announcement_active?: boolean
+          email?: string
+          id?: number
+          phone?: string
+          salon_name?: string
+          tagline?: string
+          theme_accent?: string
+          theme_background?: string
+          theme_name?: string
+          theme_primary?: string
+          updated_at?: string
+          whatsapp?: string
+        }
+        Update: {
+          address?: string
+          announcement?: string
+          announcement_active?: boolean
+          email?: string
+          id?: number
+          phone?: string
+          salon_name?: string
+          tagline?: string
+          theme_accent?: string
+          theme_background?: string
+          theme_name?: string
+          theme_primary?: string
+          updated_at?: string
+          whatsapp?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +425,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+    },
   },
 } as const
