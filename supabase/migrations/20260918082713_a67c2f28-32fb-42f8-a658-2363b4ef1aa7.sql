@@ -1,0 +1,2 @@
+UPDATE public.site_settings SET salon_name = 'Sachin Family Salon', phone = '091734 14508', whatsapp = '919173414508' WHERE id = 1;
+UPDATE public.hero_slides SET eyebrow = 'Sachin Family Salon' WHERE eyebrow ILIKE '%Sachin%';
