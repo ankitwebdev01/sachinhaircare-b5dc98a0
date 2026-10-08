@@ -1,0 +1,9 @@
+UPDATE public.products SET featured = false;
+INSERT INTO public.products (slug,name,description,category,price,compare_at_price,image_url,gallery,hair_length,hair_color,stock,featured,is_active,sort_order) VALUES
+('front-lace-hair-patch-black','Front Lace Hair Patch Black','Ultra-natural front lace hairline with a durable base. 100% human hair, cut and blended on you at the studio.','Hair Patch',6999,10999,'/images/cat-a1.jpg','{/images/cat-a1.jpg,/images/cat-a3.jpg}','4-5 inch','Natural Black',20,true,true,1),
+('mono-hair-patch-brown','Mono Hair Patch Brown','Breathable mono base with soft wavy texture in dark brown. Lasts up to a year with proper care.','Hair Patch',5999,9999,'/images/cat-a2.jpg','{/images/cat-a2.jpg,/images/cat-a4.jpg}','5-6 inch','Dark Brown',20,true,true,2),
+('full-lace-hair-patch-black','Full Lace Hair Patch Black','Full lace base for an invisible finish from every angle. Light, cool and comfortable for daily wear.','Hair Patch',24999,34999,'/images/cat-b1.jpg','{/images/cat-b1.jpg,/images/cat-b3.jpg}','4 inch','Natural Black',10,true,true,3),
+('full-lace-hair-patch-brown','Full Lace Hair Patch Brown','Full lace system with layered brown hair and natural movement. Styled to your face in one sitting.','Hair Patch',24999,34999,'/images/cat-b2.jpg','{/images/cat-b2.jpg,/images/cat-b4.jpg}','5 inch','Chocolate Brown',10,true,true,4),
+('skin-base-hair-patch-black','Skin Base Hair Patch Black','Thin skin base that melts into the scalp. Ideal for a sharp, textured short style.','Hair Patch',7999,12999,'/images/cat-a3.jpg','{/images/cat-a3.jpg}','4 inch','Natural Black',15,true,true,5)
+ON CONFLICT (slug) DO NOTHING;
+UPDATE public.site_settings SET address = 'Shop No.2, City Centre, Opp. Union Bank of India, Below PNB, Vapi–Silvassa Road, Amli, Silvassa 396230', tagline = 'Unisex salon in Silvassa for 16 years — hair patches, wigs, styling, hair spa and bridal.' WHERE id = 1;

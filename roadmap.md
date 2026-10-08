@@ -1,9 +1,10 @@
-# Sachin Unisex Salon — build roadmap
+# Sachin Family Salon — build roadmap
 
-- [x] Backend: products, hero slides, settings, orders, owner role
-- [x] Site imagery (hero slides, products, studio)
-- [x] Design system + custom cursor + badge-hiding CSS
-- [ ] Storefront pages: home, shop, product, cart, checkout, about, contact
-- [ ] Owner login (`/auth`) — first signup becomes owner
-- [ ] Dashboard: revenue + orders (30 days), products, hero slides, theme, settings
-- [ ] Payment gateway: pending real credentials from client (cash on delivery + WhatsApp for now)
+- [x] Backend, imagery, design system, cursor, badge hiding
+- [x] Owner dashboard: overview, products, hero ads, festive themes, orders, salon details
+- [ ] Every contact/book/enquiry button → WhatsApp 091734 14508 with prewritten message
+- [ ] Cart: only "Book on WhatsApp"; remove checkout
+- [ ] Rename to Sachin Family Salon everywhere
+- [ ] Home page in the reference site's style: split hero (headline + price card + CTAs + ad banners), trust strip, trendy products (4-5, catalogue photos), FAQ, About
+- [ ] About content from salon's public listing (Amli Industrial Estate, Silvassa)
+- [ ] Payment gateway: waiting on client's details
