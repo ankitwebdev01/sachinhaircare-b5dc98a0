@@ -6,6 +6,7 @@ import {
   ArrowRight,
   BadgeCheck,
   ChevronDown,
+  Compass,
   Headphones,
   MessageCircle,
   Phone,
@@ -18,7 +19,7 @@ import {
 import { ProductCard } from "@/components/site/ProductCard";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { heroSlidesQuery, productsQuery, settingsQuery, type HeroSlide } from "@/lib/store";
-import { OWNER_PHONE_DISPLAY, waLink, waMessage } from "@/lib/whatsapp";
+import { waLink, waMessage } from "@/lib/whatsapp";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -151,14 +152,12 @@ function HomePage() {
               >
                 <Phone className="size-5" /> Book Free Consultation <ArrowRight className="size-4" />
               </a>
-              <a
-                href={waLink(wa, waMessage.general(name))}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-3 rounded-xl bg-[color:var(--whatsapp)] px-6 py-4 text-sm font-medium text-[color:var(--sand)] shadow-lg"
+              <Link
+                to="/shop"
+                className="inline-flex items-center gap-3 rounded-xl bg-primary px-6 py-4 text-sm font-medium text-primary-foreground shadow-lg"
               >
-                <MessageCircle className="size-5" /> WhatsApp Us <ArrowRight className="size-4" />
-              </a>
+                <Compass className="size-5" /> Explore <ArrowRight className="size-4" />
+              </Link>
             </div>
 
             <div className="mt-8 grid max-w-lg grid-cols-4 divide-x divide-border">
@@ -174,18 +173,7 @@ function HomePage() {
 
           <div className="space-y-5">
             <AdSlider slides={slides} />
-            <a
-              href={waLink(wa, waMessage.booking(name))}
-              target="_blank"
-              rel="noreferrer"
-              className="block rounded-3xl border border-border bg-card p-7 text-center shadow-lg"
-            >
-              <span className="inline-block rounded-full bg-primary px-8 py-2.5 text-sm font-semibold tracking-[0.1em] text-primary-foreground uppercase">
-                Book now
-              </span>
-              <p className="mt-4 font-display text-4xl font-semibold">{settings?.phone || OWNER_PHONE_DISPLAY}</p>
-              <p className="mt-1 text-sm text-muted-foreground">Tap to chat with us on WhatsApp</p>
-            </a>
+            <AdSlider slides={[...slides.slice(1), ...slides.slice(0, 1)]} />
           </div>
         </div>
 
