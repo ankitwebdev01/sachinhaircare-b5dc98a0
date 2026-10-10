@@ -13,9 +13,9 @@ export const Route = createFileRoute("/product/$slug")({
     const name = params.slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
     return {
       meta: [
-        { title: `${name} — Sachin Unisex Salon` },
-        { name: "description", content: `${name} in 100% human hair, hand-fitted at Sachin Unisex Salon, Silvassa.` },
-        { property: "og:title", content: `${name} — Sachin Unisex Salon` },
+        { title: `${name} — Sachin Family Salon` },
+        { name: "description", content: `${name} in 100% human hair, hand-fitted at Sachin Family Salon, Silvassa.` },
+        { property: "og:title", content: `${name} — Sachin Family Salon` },
         { property: "og:description", content: `${name} in 100% human hair with free studio fitting.` },
       ],
     };

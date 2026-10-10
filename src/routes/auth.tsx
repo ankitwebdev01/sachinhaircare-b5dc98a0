@@ -6,9 +6,9 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Owner Login — Sachin Unisex Salon" },
+      { title: "Owner Login — Sachin Family Salon" },
       { name: "description", content: "Secure login for the salon owner to manage products, orders and the website." },
-      { property: "og:title", content: "Owner Login — Sachin Unisex Salon" },
+      { property: "og:title", content: "Owner Login — Sachin Family Salon" },
       { property: "og:description", content: "Salon owner access to the store dashboard." },
       { name: "robots", content: "noindex" },
     ],

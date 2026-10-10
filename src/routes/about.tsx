@@ -6,13 +6,13 @@ import { settingsQuery } from "@/lib/store";
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "Our Studio — Sachin Unisex Salon, Silvassa" },
+      { title: "Our Studio — Sachin Family Salon, Silvassa" },
       {
         name: "description",
         content:
-          "Meet the team behind Sachin Unisex Salon in Silvassa — hair systems, wigs and patches fitted by hand since day one.",
+          "Meet the team behind Sachin Family Salon in Silvassa — hair systems, wigs and patches fitted by hand since day one.",
       },
-      { property: "og:title", content: "Our Studio — Sachin Unisex Salon, Silvassa" },
+      { property: "og:title", content: "Our Studio — Sachin Family Salon, Silvassa" },
       { property: "og:description", content: "A local salon building natural hair systems by hand in Silvassa." },
     ],
   }),
@@ -36,7 +36,7 @@ function AboutPage() {
         <div>
           <h2 className="font-display text-4xl">Built chair by chair</h2>
           <p className="mt-6 leading-relaxed text-muted-foreground">
-            {settings?.salon_name ?? "Sachin Unisex Salon"} started as a neighbourhood unisex salon and grew into a hair
+            {settings?.salon_name ?? "Sachin Family Salon"} started as a neighbourhood unisex salon and grew into a hair
             studio people travel to. We are not a big brand and we have never been on television — our work travels by
             word of mouth from one client to the next.
           </p>

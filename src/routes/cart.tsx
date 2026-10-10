@@ -7,9 +7,9 @@ import { formatINR } from "@/lib/store";
 export const Route = createFileRoute("/cart")({
   head: () => ({
     meta: [
-      { title: "Your Bag — Sachin Unisex Salon" },
+      { title: "Your Bag — Sachin Family Salon" },
       { name: "description", content: "Review the wigs, patches and care products in your bag before checkout." },
-      { property: "og:title", content: "Your Bag — Sachin Unisex Salon" },
+      { property: "og:title", content: "Your Bag — Sachin Family Salon" },
       { property: "og:description", content: "Review your items and checkout with cash on delivery or WhatsApp." },
     ],
   }),

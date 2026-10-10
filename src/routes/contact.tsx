@@ -7,12 +7,12 @@ import { settingsQuery } from "@/lib/store";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact & Free Trial — Sachin Unisex Salon" },
+      { title: "Contact & Free Trial — Sachin Family Salon" },
       {
         name: "description",
-        content: "Call, WhatsApp or visit Sachin Unisex Salon in Silvassa to book a free wig or hair patch trial.",
+        content: "Call, WhatsApp or visit Sachin Family Salon in Silvassa to book a free wig or hair patch trial.",
       },
-      { property: "og:title", content: "Contact & Free Trial — Sachin Unisex Salon" },
+      { property: "og:title", content: "Contact & Free Trial — Sachin Family Salon" },
       { property: "og:description", content: "Book a free wig or hair patch trial at our Silvassa studio." },
     ],
   }),

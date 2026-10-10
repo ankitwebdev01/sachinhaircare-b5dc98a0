@@ -11,7 +11,7 @@ export function Footer() {
     <footer className="mt-24 bg-ink text-[color:var(--sand)]">
       <div className="mx-auto grid max-w-7xl gap-12 px-5 py-16 md:grid-cols-4">
         <div className="md:col-span-2">
-          <p className="font-display text-3xl">{settings?.salon_name ?? "Sachin Unisex Salon"}</p>
+          <p className="font-display text-3xl">{settings?.salon_name ?? "Sachin Family Salon"}</p>
           <p className="mt-4 max-w-sm text-sm leading-relaxed opacity-75">
             {settings?.tagline ?? "Premium human hair wigs, patches and salon care."}
           </p>
@@ -72,7 +72,7 @@ export function Footer() {
         </div>
       </div>
       <div className="border-t border-white/10 py-6 text-center text-xs opacity-55">
-        © {year} {settings?.salon_name ?? "Sachin Unisex Salon"}. All rights reserved.
+        © {year} {settings?.salon_name ?? "Sachin Family Salon"}. All rights reserved.
       </div>
     </footer>
   );

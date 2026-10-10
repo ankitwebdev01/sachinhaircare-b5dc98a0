@@ -32,7 +32,7 @@ export function SlidesTab() {
       const { error } = await supabase.from("hero_slides").insert({
         title: "New advertisement",
         subtitle: "Describe the offer here.",
-        eyebrow: "Sachin Unisex Salon",
+        eyebrow: "Sachin Family Salon",
         cta_label: "Shop now",
         cta_href: "/shop",
         image_url: "/images/hero-1.jpg",

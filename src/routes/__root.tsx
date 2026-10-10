@@ -80,14 +80,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Sachin Unisex Salon — Human Hair Wigs & Patches" },
+      { title: "Sachin Family Salon — Human Hair Wigs & Patches" },
       {
         name: "description",
         content:
-          "Sachin Unisex Salon in Silvassa crafts natural human hair wigs, patches and extensions with free fitting and cash on delivery.",
+          "Sachin Family Salon in Silvassa crafts natural human hair wigs, patches and extensions with free fitting and cash on delivery.",
       },
-      { name: "author", content: "Sachin Unisex Salon" },
-      { property: "og:title", content: "Sachin Unisex Salon — Human Hair Wigs & Patches" },
+      { name: "author", content: "Sachin Family Salon" },
+      { property: "og:title", content: "Sachin Family Salon — Human Hair Wigs & Patches" },
       {
         property: "og:description",
         content: "Natural human hair wigs, patches and extensions, hand-fitted at our Silvassa studio.",
