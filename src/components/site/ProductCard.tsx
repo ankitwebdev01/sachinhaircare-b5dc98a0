@@ -1,13 +1,14 @@
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { MessageCircle, ShoppingBag } from "lucide-react";
+import { Heart, MessageCircle, ShoppingBag } from "lucide-react";
 import { toast } from "sonner";
 import { formatINR, settingsQuery, type Product } from "@/lib/store";
 import { useCart } from "@/lib/cart";
 import { waLink, waMessage } from "@/lib/whatsapp";
 
 export function ProductCard({ product }: { product: Product }) {
-  const { add } = useCart();
+  const { add, toggleWish, isWished } = useCart();
+  const item = { id: product.id, slug: product.slug, name: product.name, price: product.price, image_url: product.image_url };
   const { data: settings } = useQuery(settingsQuery);
   const off =
     product.compare_at_price && product.compare_at_price > product.price
@@ -15,7 +16,7 @@ export function ProductCard({ product }: { product: Product }) {
       : 0;
 
   return (
-    <article className="card-lift group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card">
+    <article className="card-lift group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card">
       <Link to="/product/$slug" params={{ slug: product.slug }} className="relative block aspect-square overflow-hidden bg-secondary">
         <img
           src={product.image_url}
@@ -29,6 +30,14 @@ export function ProductCard({ product }: { product: Product }) {
           </span>
         ) : null}
       </Link>
+      <button
+        type="button"
+        aria-label="Wishlist"
+        onClick={() => toggleWish(item)}
+        className="absolute top-3 right-3 rounded-full bg-card/90 p-2"
+      >
+        <Heart className={`size-4 ${isWished(product.id) ? "fill-current text-accent" : ""}`} />
+      </button>
       <div className="flex flex-1 flex-col p-4">
         <h3 className="text-sm font-semibold leading-snug">
           <Link to="/product/$slug" params={{ slug: product.slug }}>{product.name}</Link>
@@ -50,8 +59,7 @@ export function ProductCard({ product }: { product: Product }) {
             type="button"
             aria-label="Add to bag"
             onClick={() => {
-              add({ id: product.id, slug: product.slug, name: product.name, price: product.price, image_url: product.image_url });
-              toast.success(`${product.name} added to bag`);
+              if (add(item)) toast.success(`${product.name} added to bag`);
             }}
             className="rounded-lg border border-border px-3"
           >

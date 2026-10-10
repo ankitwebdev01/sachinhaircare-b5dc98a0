@@ -6,15 +6,16 @@ import { SiteLayout } from "@/components/site/SiteLayout";
 import { productsQuery } from "@/lib/store";
 
 export const Route = createFileRoute("/shop")({
+  validateSearch: (s: Record<string, unknown>): { q?: string | undefined } => ({ q: typeof s["q"] === "string" && s["q"] ? (s["q"] as string) : undefined }),
   head: () => ({
     meta: [
-      { title: "Shop Wigs, Patches & Extensions — Sachin Unisex Salon" },
+      { title: "Shop Wigs, Patches & Extensions — Sachin Family Salon" },
       {
         name: "description",
         content:
-          "Browse human hair wigs, men's hair patches, clip-in extensions and care kits from Sachin Unisex Salon, Silvassa.",
+          "Browse human hair wigs, men's hair patches, clip-in extensions and care kits from Sachin Family Salon, Silvassa.",
       },
-      { property: "og:title", content: "Shop Wigs, Patches & Extensions — Sachin Unisex Salon" },
+      { property: "og:title", content: "Shop Wigs, Patches & Extensions — Sachin Family Salon" },
       { property: "og:description", content: "Human hair wigs, patches, extensions and care kits, delivered across India." },
     ],
   }),
@@ -29,6 +30,7 @@ const sorts = [
 
 function ShopPage() {
   const { data: products = [], isLoading } = useQuery(productsQuery);
+  const { q } = Route.useSearch();
   const [category, setCategory] = useState("All");
   const [sort, setSort] = useState<(typeof sorts)[number]["key"]>("featured");
 
@@ -38,18 +40,23 @@ function ShopPage() {
   );
 
   const visible = useMemo(() => {
-    const list = products.filter((p) => category === "All" || p.category === category);
+    const term = (q ?? "").toLowerCase();
+    const list = products.filter(
+      (p) =>
+        (category === "All" || p.category === category) &&
+        (!term || `${p.name} ${p.category} ${p.description}`.toLowerCase().includes(term)),
+    );
     if (sort === "low") return [...list].sort((a, b) => a.price - b.price);
     if (sort === "high") return [...list].sort((a, b) => b.price - a.price);
     return [...list].sort((a, b) => Number(b.featured) - Number(a.featured) || a.sort_order - b.sort_order);
-  }, [products, category, sort]);
+  }, [products, category, sort, q]);
 
   return (
     <SiteLayout>
       <header className="border-b border-border bg-secondary/50">
         <div className="mx-auto max-w-7xl px-5 py-16">
           <p className="text-xs tracking-[0.34em] text-primary uppercase">The collection</p>
-          <h1 className="mt-4 font-display text-5xl">Wigs, patches &amp; extensions</h1>
+          <h1 className="mt-4 font-display text-5xl">{q ? `Results for “${q}”` : "All products"}</h1>
           <p className="mt-4 max-w-xl text-muted-foreground">
             Every piece is 100% human hair, fitted free of charge at our Silvassa studio and shipped anywhere in India.
           </p>

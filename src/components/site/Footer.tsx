@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { Instagram, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import { settingsQuery } from "@/lib/store";
+import { waLink, waMessage } from "@/lib/whatsapp";
 
 export function Footer() {
   const { data: settings } = useQuery(settingsQuery);
@@ -11,14 +12,14 @@ export function Footer() {
     <footer className="mt-24 bg-ink text-[color:var(--sand)]">
       <div className="mx-auto grid max-w-7xl gap-12 px-5 py-16 md:grid-cols-4">
         <div className="md:col-span-2">
-          <p className="font-display text-3xl">{settings?.salon_name ?? "Sachin Unisex Salon"}</p>
+          <p className="font-display text-3xl">{settings?.salon_name ?? "Sachin Family Salon"}</p>
           <p className="mt-4 max-w-sm text-sm leading-relaxed opacity-75">
             {settings?.tagline ?? "Premium human hair wigs, patches and salon care."}
           </p>
           <div className="mt-6 flex gap-3">
             {settings?.whatsapp ? (
               <a
-                href={`https://wa.me/${settings.whatsapp}`}
+                href={waLink(settings.whatsapp, waMessage.general(settings.salon_name))}
                 target="_blank"
                 rel="noreferrer"
                 className="rounded-full border border-white/20 p-2.5 transition-colors hover:border-primary"
@@ -45,7 +46,7 @@ export function Footer() {
             <Link to="/shop">Shop all</Link>
             <Link to="/about">Our studio</Link>
             <Link to="/contact">Book a trial</Link>
-            <Link to="/auth">Owner login</Link>
+            <Link to="/auth">Owner / customer login</Link>
           </div>
         </div>
 
@@ -72,7 +73,7 @@ export function Footer() {
         </div>
       </div>
       <div className="border-t border-white/10 py-6 text-center text-xs opacity-55">
-        © {year} {settings?.salon_name ?? "Sachin Unisex Salon"}. All rights reserved.
+        © {year} {settings?.salon_name ?? "Sachin Family Salon"}. All rights reserved.
       </div>
     </footer>
   );

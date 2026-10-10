@@ -1,11 +1,12 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Check, Minus, Plus, ShieldCheck, Truck } from "lucide-react";
 import { toast } from "sonner";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { ProductCard } from "@/components/site/ProductCard";
-import { formatINR, productsQuery } from "@/lib/store";
+import { formatINR, productsQuery, settingsQuery } from "@/lib/store";
+import { waLink, waMessage } from "@/lib/whatsapp";
 import { useCart } from "@/lib/cart";
 
 export const Route = createFileRoute("/product/$slug")({
@@ -13,9 +14,9 @@ export const Route = createFileRoute("/product/$slug")({
     const name = params.slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
     return {
       meta: [
-        { title: `${name} — Sachin Unisex Salon` },
-        { name: "description", content: `${name} in 100% human hair, hand-fitted at Sachin Unisex Salon, Silvassa.` },
-        { property: "og:title", content: `${name} — Sachin Unisex Salon` },
+        { title: `${name} — Sachin Family Salon` },
+        { name: "description", content: `${name} in 100% human hair, hand-fitted at Sachin Family Salon, Silvassa.` },
+        { property: "og:title", content: `${name} — Sachin Family Salon` },
         { property: "og:description", content: `${name} in 100% human hair with free studio fitting.` },
       ],
     };
@@ -25,10 +26,10 @@ export const Route = createFileRoute("/product/$slug")({
 
 function ProductPage() {
   const { slug } = Route.useParams();
-  const navigate = useNavigate();
   const { add } = useCart();
   const [quantity, setQuantity] = useState(1);
   const { data: products = [], isLoading } = useQuery(productsQuery);
+  const { data: settings } = useQuery(settingsQuery);
 
   const product = products.find((p) => p.slug === slug);
   const related = products.filter((p) => p.slug !== slug).slice(0, 3);
@@ -55,7 +56,7 @@ function ProductPage() {
   }
 
   const addToBag = () => {
-    add(
+    const ok = add(
       {
         id: product.id,
         slug: product.slug,
@@ -65,7 +66,7 @@ function ProductPage() {
       },
       quantity,
     );
-    toast.success(`${product.name} added to bag`);
+    if (ok) toast.success(`${product.name} added to bag`);
   };
 
   return (
@@ -128,17 +129,14 @@ function ProductPage() {
               >
                 {product.stock > 0 ? "Add to bag" : "Sold out"}
               </button>
-              <button
-                type="button"
-                disabled={product.stock <= 0}
-                onClick={() => {
-                  addToBag();
-                  navigate({ to: "/checkout" });
-                }}
-                className="flex-1 bg-primary px-8 py-4 text-xs tracking-[0.26em] text-primary-foreground uppercase disabled:opacity-40"
+              <a
+                href={waLink(settings?.whatsapp, waMessage.product({ ...product, quantity }, settings?.salon_name))}
+                target="_blank"
+                rel="noreferrer"
+                className="flex-1 rounded-lg bg-[color:var(--whatsapp)] px-8 py-4 text-center text-xs tracking-[0.2em] text-[color:var(--sand)] uppercase"
               >
-                Buy now
-              </button>
+                Book on WhatsApp
+              </a>
             </div>
 
             <ul className="mt-9 space-y-3 text-sm text-muted-foreground">

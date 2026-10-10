@@ -3,16 +3,17 @@ import { useQuery } from "@tanstack/react-query";
 import { Clock, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { settingsQuery } from "@/lib/store";
+import { waLink, waMessage } from "@/lib/whatsapp";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact & Free Trial — Sachin Unisex Salon" },
+      { title: "Contact & Free Trial — Sachin Family Salon" },
       {
         name: "description",
-        content: "Call, WhatsApp or visit Sachin Unisex Salon in Silvassa to book a free wig or hair patch trial.",
+        content: "Call, WhatsApp or visit Sachin Family Salon in Silvassa to book a free wig or hair patch trial.",
       },
-      { property: "og:title", content: "Contact & Free Trial — Sachin Unisex Salon" },
+      { property: "og:title", content: "Contact & Free Trial — Sachin Family Salon" },
       { property: "og:description", content: "Book a free wig or hair patch trial at our Silvassa studio." },
     ],
   }),
@@ -54,7 +55,7 @@ function ContactPage() {
           ))}
           {settings?.whatsapp ? (
             <a
-              href={`https://wa.me/${settings.whatsapp}`}
+              href={waLink(settings.whatsapp, waMessage.booking(settings.salon_name))}
               target="_blank"
               rel="noreferrer"
               className="inline-flex bg-primary px-9 py-4 text-xs tracking-[0.26em] text-primary-foreground uppercase"

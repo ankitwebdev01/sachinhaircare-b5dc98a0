@@ -2,15 +2,17 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { useCart } from "@/lib/cart";
-import { formatINR } from "@/lib/store";
+import { useQuery } from "@tanstack/react-query";
+import { formatINR, settingsQuery } from "@/lib/store";
+import { waLink, waMessage } from "@/lib/whatsapp";
 
 export const Route = createFileRoute("/cart")({
   head: () => ({
     meta: [
-      { title: "Your Bag — Sachin Unisex Salon" },
-      { name: "description", content: "Review the wigs, patches and care products in your bag before checkout." },
-      { property: "og:title", content: "Your Bag — Sachin Unisex Salon" },
-      { property: "og:description", content: "Review your items and checkout with cash on delivery or WhatsApp." },
+      { title: "Your Bag — Sachin Family Salon" },
+      { name: "description", content: "Review the wigs, patches and care products in your bag before booking on WhatsApp." },
+      { property: "og:title", content: "Your Bag — Sachin Family Salon" },
+      { property: "og:description", content: "Review your items and book them on WhatsApp." },
     ],
   }),
   component: CartPage,
@@ -18,6 +20,7 @@ export const Route = createFileRoute("/cart")({
 
 function CartPage() {
   const { lines, subtotal, setQuantity, remove } = useCart();
+  const { data: settings } = useQuery(settingsQuery);
 
   return (
     <SiteLayout>
@@ -80,12 +83,15 @@ function CartPage() {
                 <span>Total</span>
                 <span>{formatINR(subtotal)}</span>
               </div>
-              <Link
-                to="/checkout"
-                className="mt-7 block bg-primary py-4 text-center text-xs tracking-[0.26em] text-primary-foreground uppercase"
+              <a
+                href={waLink(settings?.whatsapp, waMessage.cart(lines, subtotal, settings?.salon_name))}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-7 block rounded-lg bg-[color:var(--whatsapp)] py-4 text-center text-xs font-medium tracking-[0.2em] text-[color:var(--sand)] uppercase"
               >
-                Checkout
-              </Link>
+                Book on WhatsApp
+              </a>
+              <p className="mt-3 text-center text-xs text-muted-foreground">Your items are sent to us on WhatsApp. We confirm price, fitting and delivery there.</p>
             </aside>
           </div>
         )}

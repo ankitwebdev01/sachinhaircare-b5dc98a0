@@ -37,11 +37,29 @@ function Dashboard() {
   const [tab, setTab] = useState<(typeof tabs)[number]["key"]>("overview");
   const { data: settings } = useQuery(settingsQuery);
   const navigate = useNavigate();
+  const { data: isAdmin, isLoading } = useQuery({
+    queryKey: ["is_admin"],
+    queryFn: async () => {
+      const { data: u } = await supabase.auth.getUser();
+      if (!u.user) return false;
+      const { data } = await supabase.from("user_roles").select("role").eq("user_id", u.user.id).eq("role", "admin").maybeSingle();
+      return Boolean(data);
+    },
+  });
 
   const signOut = async () => {
     await supabase.auth.signOut();
     navigate({ to: "/auth" });
   };
+
+  if (isLoading) return <p className="py-32 text-center text-muted-foreground">Loading…</p>;
+  if (!isAdmin)
+    return (
+      <div className="py-32 text-center">
+        <p className="font-display text-3xl">This area is for the salon owner only.</p>
+        <Link to="/" className="mt-6 inline-block text-primary">Back to the website</Link>
+      </div>
+    );
 
   return (
     <div className="min-h-screen bg-secondary/40">

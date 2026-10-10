@@ -6,9 +6,9 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Owner Login — Sachin Unisex Salon" },
+      { title: "Owner Login — Sachin Family Salon" },
       { name: "description", content: "Secure login for the salon owner to manage products, orders and the website." },
-      { property: "og:title", content: "Owner Login — Sachin Unisex Salon" },
+      { property: "og:title", content: "Owner Login — Sachin Family Salon" },
       { property: "og:description", content: "Salon owner access to the store dashboard." },
       { name: "robots", content: "noindex" },
     ],
@@ -23,9 +23,14 @@ function AuthPage() {
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
 
+  const goNext = async (userId: string) => {
+    const { data } = await supabase.from("user_roles").select("role").eq("user_id", userId).eq("role", "admin").maybeSingle();
+    navigate({ to: data ? "/dashboard" : "/", replace: true });
+  };
+
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/dashboard", replace: true });
+      if (data.session) goNext(data.session.user.id);
     });
   }, [navigate]);
 
@@ -48,13 +53,13 @@ function AuthPage() {
       return;
     }
 
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { data: signIn, error } = await supabase.auth.signInWithPassword({ email, password });
     setBusy(false);
     if (error) {
       toast.error(error.message);
       return;
     }
-    navigate({ to: "/dashboard" });
+    goNext(signIn.user.id);
   };
 
   const field = "mt-2 w-full border border-border bg-background px-4 py-3 text-sm outline-none focus:border-primary";
@@ -65,11 +70,11 @@ function AuthPage() {
         <Link to="/" className="text-xs tracking-[0.24em] text-muted-foreground uppercase">
           ← Back to site
         </Link>
-        <h1 className="mt-6 font-display text-4xl">{mode === "signin" ? "Owner login" : "Create owner account"}</h1>
+        <h1 className="mt-6 font-display text-4xl">{mode === "signin" ? "Sign in" : "Create account"}</h1>
         <p className="mt-3 text-sm text-muted-foreground">
           {mode === "signin"
-            ? "Sign in to manage products, orders and the look of the site."
-            : "The first account created becomes the salon owner."}
+            ? "Sign in to save items to your bag and wishlist. The salon owner is taken to the dashboard."
+            : "Create an account to save your bag and wishlist."}
         </p>
 
         <form onSubmit={submit} className="mt-8 space-y-5">
