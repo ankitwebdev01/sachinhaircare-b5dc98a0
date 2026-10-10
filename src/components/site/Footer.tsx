@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { Instagram, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import { settingsQuery } from "@/lib/store";
+import { waLink, waMessage } from "@/lib/whatsapp";
 
 export function Footer() {
   const { data: settings } = useQuery(settingsQuery);
@@ -18,7 +19,7 @@ export function Footer() {
           <div className="mt-6 flex gap-3">
             {settings?.whatsapp ? (
               <a
-                href={`https://wa.me/${settings.whatsapp}`}
+                href={waLink(settings.whatsapp, waMessage.general(settings.salon_name))}
                 target="_blank"
                 rel="noreferrer"
                 className="rounded-full border border-white/20 p-2.5 transition-colors hover:border-primary"
@@ -45,7 +46,7 @@ export function Footer() {
             <Link to="/shop">Shop all</Link>
             <Link to="/about">Our studio</Link>
             <Link to="/contact">Book a trial</Link>
-            <Link to="/auth">Owner login</Link>
+            <Link to="/auth">Owner / customer login</Link>
           </div>
         </div>
 

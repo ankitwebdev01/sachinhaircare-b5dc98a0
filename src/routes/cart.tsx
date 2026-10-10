@@ -10,9 +10,9 @@ export const Route = createFileRoute("/cart")({
   head: () => ({
     meta: [
       { title: "Your Bag — Sachin Family Salon" },
-      { name: "description", content: "Review the wigs, patches and care products in your bag before checkout." },
+      { name: "description", content: "Review the wigs, patches and care products in your bag before booking on WhatsApp." },
       { property: "og:title", content: "Your Bag — Sachin Family Salon" },
-      { property: "og:description", content: "Review your items and checkout with cash on delivery or WhatsApp." },
+      { property: "og:description", content: "Review your items and book them on WhatsApp." },
     ],
   }),
   component: CartPage,

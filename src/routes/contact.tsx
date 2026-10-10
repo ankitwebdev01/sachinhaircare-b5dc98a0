@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Clock, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { settingsQuery } from "@/lib/store";
+import { waLink, waMessage } from "@/lib/whatsapp";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -54,7 +55,7 @@ function ContactPage() {
           ))}
           {settings?.whatsapp ? (
             <a
-              href={`https://wa.me/${settings.whatsapp}`}
+              href={waLink(settings.whatsapp, waMessage.booking(settings.salon_name))}
               target="_blank"
               rel="noreferrer"
               className="inline-flex bg-primary px-9 py-4 text-xs tracking-[0.26em] text-primary-foreground uppercase"
