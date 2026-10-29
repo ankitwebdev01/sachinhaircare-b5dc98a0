@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "14.5"
+    PostgrestVersion: "14.17"
   }
   public: {
     Tables: {
@@ -260,6 +260,75 @@ export type Database = {
           theme_primary?: string
           updated_at?: string
           whatsapp?: string
+        }
+        Relationships: []
+      }
+      transformations: {
+        Row: {
+          after_url: string
+          before_url: string
+          caption: string
+          created_at: string
+          id: string
+          is_active: boolean
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          after_url?: string
+          before_url?: string
+          caption?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          after_url?: string
+          before_url?: string
+          caption?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      trending_videos: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          link_href: string
+          sort_order: number
+          thumbnail_url: string
+          title: string
+          updated_at: string
+          video_url: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          link_href?: string
+          sort_order?: number
+          thumbnail_url?: string
+          title?: string
+          updated_at?: string
+          video_url?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          link_href?: string
+          sort_order?: number
+          thumbnail_url?: string
+          title?: string
+          updated_at?: string
+          video_url?: string
         }
         Relationships: []
       }

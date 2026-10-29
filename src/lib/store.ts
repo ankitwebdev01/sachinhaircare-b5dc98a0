@@ -135,6 +135,79 @@ export const ordersQuery = queryOptions({
   },
 });
 
+export type TrendingVideo = {
+  id: string;
+  title: string;
+  thumbnail_url: string;
+  video_url: string;
+  link_href: string;
+  sort_order: number;
+  is_active: boolean;
+};
+
+export type Transformation = {
+  id: string;
+  caption: string;
+  before_url: string;
+  after_url: string;
+  sort_order: number;
+  is_active: boolean;
+};
+
+export const trendingVideosQuery = queryOptions({
+  queryKey: ["trending_videos"],
+  queryFn: async (): Promise<TrendingVideo[]> => {
+    const { data, error } = await supabase
+      .from("trending_videos")
+      .select("*")
+      .eq("is_active", true)
+      .order("sort_order", { ascending: true })
+      .limit(10);
+    if (error) throw error;
+    return (data ?? []) as TrendingVideo[];
+  },
+});
+
+export const allTrendingVideosQuery = queryOptions({
+  queryKey: ["trending_videos", "all"],
+  queryFn: async (): Promise<TrendingVideo[]> => {
+    const { data, error } = await supabase
+      .from("trending_videos")
+      .select("*")
+      .order("sort_order", { ascending: true })
+      .limit(10);
+    if (error) throw error;
+    return (data ?? []) as TrendingVideo[];
+  },
+});
+
+export const transformationsQuery = queryOptions({
+  queryKey: ["transformations"],
+  queryFn: async (): Promise<Transformation[]> => {
+    const { data, error } = await supabase
+      .from("transformations")
+      .select("*")
+      .eq("is_active", true)
+      .order("sort_order", { ascending: true })
+      .limit(10);
+    if (error) throw error;
+    return (data ?? []) as Transformation[];
+  },
+});
+
+export const allTransformationsQuery = queryOptions({
+  queryKey: ["transformations", "all"],
+  queryFn: async (): Promise<Transformation[]> => {
+    const { data, error } = await supabase
+      .from("transformations")
+      .select("*")
+      .order("sort_order", { ascending: true })
+      .limit(10);
+    if (error) throw error;
+    return (data ?? []) as Transformation[];
+  },
+});
+
 export function formatINR(value: number) {
   return new Intl.NumberFormat("en-IN", {
     style: "currency",
