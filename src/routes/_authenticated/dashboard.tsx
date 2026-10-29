@@ -1,13 +1,15 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { BarChart3, Image, LogOut, Package, Palette, Settings, ShoppingBag } from "lucide-react";
+import { BarChart3, Clapperboard, Image, LogOut, Package, Palette, Scissors, Settings, ShoppingBag } from "lucide-react";
 import { OverviewTab } from "@/components/admin/OverviewTab";
 import { ProductsTab } from "@/components/admin/ProductsTab";
 import { SlidesTab } from "@/components/admin/SlidesTab";
 import { ThemeTab } from "@/components/admin/ThemeTab";
 import { SettingsTab } from "@/components/admin/SettingsTab";
 import { OrdersTab } from "@/components/admin/OrdersTab";
+import { VideosTab } from "@/components/admin/VideosTab";
+import { TransformationsTab } from "@/components/admin/TransformationsTab";
 import { settingsQuery } from "@/lib/store";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -28,6 +30,8 @@ const tabs = [
   { key: "overview", label: "Overview", icon: BarChart3 },
   { key: "products", label: "Products", icon: Package },
   { key: "slides", label: "Hero ads", icon: Image },
+  { key: "videos", label: "Trending videos", icon: Clapperboard },
+  { key: "transforms", label: "Transformations", icon: Scissors },
   { key: "theme", label: "Festive theme", icon: Palette },
   { key: "orders", label: "Orders", icon: ShoppingBag },
   { key: "settings", label: "Salon details", icon: Settings },
@@ -105,6 +109,8 @@ function Dashboard() {
         {tab === "overview" ? <OverviewTab /> : null}
         {tab === "products" ? <ProductsTab /> : null}
         {tab === "slides" ? <SlidesTab /> : null}
+        {tab === "videos" ? <VideosTab /> : null}
+        {tab === "transforms" ? <TransformationsTab /> : null}
         {tab === "theme" ? <ThemeTab /> : null}
         {tab === "orders" ? <OrdersTab /> : null}
         {tab === "settings" ? <SettingsTab /> : null}
