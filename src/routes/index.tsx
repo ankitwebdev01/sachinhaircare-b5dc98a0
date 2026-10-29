@@ -18,6 +18,8 @@ import {
 } from "lucide-react";
 import { ProductCard } from "@/components/site/ProductCard";
 import { SiteLayout } from "@/components/site/SiteLayout";
+import { TrendingVideos } from "@/components/site/TrendingVideos";
+import { Transformations } from "@/components/site/Transformations";
 import { heroSlidesQuery, productsQuery, settingsQuery, type HeroSlide } from "@/lib/store";
 import { waLink, waMessage } from "@/lib/whatsapp";
 
@@ -192,6 +194,9 @@ function HomePage() {
         </div>
       </section>
 
+      {/* TRENDING VIDEOS */}
+      <TrendingVideos />
+
       {/* TRENDY PRODUCTS */}
       <section className="mx-auto max-w-7xl px-5 py-20">
         <div className="flex flex-wrap items-end justify-between gap-6">
@@ -221,6 +226,9 @@ function HomePage() {
           ))}
         </div>
       </section>
+
+      {/* TRANSFORMATIONS */}
+      <Transformations />
 
       {/* ABOUT */}
       <section className="bg-accent py-20 text-accent-foreground">
