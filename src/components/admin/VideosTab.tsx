@@ -1,14 +1,18 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2, Upload } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { allTrendingVideosQuery, type TrendingVideo } from "@/lib/store";
+import { deleteMediaFile, uploadMediaFile } from "@/lib/media-upload";
 
 const MAX_VIDEOS = 10;
+type MediaField = "video_url" | "thumbnail_url";
 
 const field = "mt-2 w-full border border-border bg-background px-3 py-2.5 text-sm outline-none focus:border-primary";
 const label = "text-xs tracking-[0.16em] text-muted-foreground uppercase";
+
+type Row = { id: string; field: MediaField };
 
 export function VideosTab() {
   const queryClient = useQueryClient();
@@ -43,15 +47,24 @@ export function VideosTab() {
     },
     onSuccess: () => {
       invalidate();
-      toast.success("Video slot added — fill in the details below");
+      toast.success("Video slot added — upload the clip from your device below");
     },
     onError: (error: Error) => toast.error(error.message),
   });
 
   const remove = useMutation({
     mutationFn: async (id: string) => {
+      const { data: row } = await supabase
+        .from("trending_videos")
+        .select("video_url, thumbnail_url")
+        .eq("id", id)
+        .single();
       const { error } = await supabase.from("trending_videos").delete().eq("id", id);
       if (error) throw error;
+      if (row) {
+        void deleteMediaFile(row.video_url);
+        void deleteMediaFile(row.thumbnail_url);
+      }
     },
     onSuccess: () => {
       invalidate();
@@ -60,9 +73,54 @@ export function VideosTab() {
     onError: (error: Error) => toast.error(error.message),
   });
 
+  const upload = useMutation({
+    mutationFn: async ({ id, field: f, file }: Row & { file: File }) => {
+      const url = await uploadMediaFile(file, f === "video_url" ? "videos" : "photos");
+      const { data: row } = await supabase.from("trending_videos").select(f).eq("id", id).single();
+      const { error } = await supabase
+        .from("trending_videos")
+        .update({ [f]: url } as { video_url?: string; thumbnail_url?: string })
+        .eq("id", id);
+      if (error) {
+        void deleteMediaFile(url);
+        throw error;
+      }
+      const old = row ? (row[f] as string | null) : null;
+      if (old) void deleteMediaFile(old);
+    },
+    onSuccess: (_d, v) => {
+      invalidate();
+      toast.success(v.field === "video_url" ? "Clip uploaded — it now plays on the website in a loop" : "Thumbnail uploaded");
+    },
+    onError: (error: Error) => toast.error(error.message),
+  });
+
+  const clearMedia = useMutation({
+    mutationFn: async ({ id, field: f }: Row) => {
+      const { data: row } = await supabase.from("trending_videos").select(f).eq("id", id).single();
+      const { error } = await supabase
+        .from("trending_videos")
+        .update({ [f]: "" } as { video_url?: string; thumbnail_url?: string })
+        .eq("id", id);
+      if (error) throw error;
+      const old = row ? (row[f] as string | null) : null;
+      if (old) void deleteMediaFile(old);
+    },
+    onSuccess: () => {
+      invalidate();
+      toast.success("Removed");
+    },
+    onError: (error: Error) => toast.error(error.message),
+  });
+
   const valueOf = (video: TrendingVideo, key: keyof TrendingVideo) => (drafts[video.id]?.[key] ?? video[key]) as string;
   const setValue = (id: string, key: keyof TrendingVideo, value: string | boolean | number) =>
     setDrafts((d) => ({ ...d, [id]: { ...d[id], [key]: value } }));
+
+  const isUploading = (v: Row) =>
+    (upload.isPending || clearMedia.isPending) &&
+    (upload.variables?.id === v.id || clearMedia.variables?.id === v.id) &&
+    (upload.variables?.field === v.field || clearMedia.variables?.field === v.field);
 
   return (
     <div className="space-y-8">
@@ -70,7 +128,7 @@ export function VideosTab() {
         <div>
           <h2 className="font-display text-3xl">Trending videos</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            {videos.length}/{MAX_VIDEOS} slots used — up to 10 videos show on the home page rail.
+            {videos.length}/{MAX_VIDEOS} slots used — uploaded clips play on their own, in a loop, on the home page.
           </p>
         </div>
         <button
@@ -101,20 +159,37 @@ export function VideosTab() {
                 <Trash2 className="size-4" />
               </button>
             </div>
+
+            <div>
+              <span className={label}>Video clip (uploaded clips play on loop)</span>
+              <input className={field} value={valueOf(video, "video_url")} onChange={(e) => setValue(video.id, "video_url", e.target.value)} placeholder="Upload from your device, or paste a direct video link" />
+              <MediaControls
+                value={valueOf(video, "video_url")}
+                accept="video/*"
+                busy={isUploading({ id: video.id, field: "video_url" })}
+                onUpload={(file) => upload.mutate({ id: video.id, field: "video_url", file })}
+                onRemove={() => clearMedia.mutate({ id: video.id, field: "video_url" })}
+                removeLabel="Remove video"
+              />
+            </div>
+            <div>
+              <span className={label}>Cover image (shown until the clip loads)</span>
+              <input className={field} value={valueOf(video, "thumbnail_url")} onChange={(e) => setValue(video.id, "thumbnail_url", e.target.value)} placeholder="Upload from your device, or paste an image link (9:16 works best)" />
+              <MediaControls
+                value={valueOf(video, "thumbnail_url")}
+                accept="image/*"
+                busy={isUploading({ id: video.id, field: "thumbnail_url" })}
+                onUpload={(file) => upload.mutate({ id: video.id, field: "thumbnail_url", file })}
+                onRemove={() => clearMedia.mutate({ id: video.id, field: "thumbnail_url" })}
+                removeLabel="Remove cover image"
+              />
+            </div>
             <div>
               <span className={label}>Title (shown on the card)</span>
               <input className={field} value={valueOf(video, "title")} onChange={(e) => setValue(video.id, "title", e.target.value)} />
             </div>
             <div>
-              <span className={label}>Thumbnail image address (9:16 works best)</span>
-              <input className={field} value={valueOf(video, "thumbnail_url")} onChange={(e) => setValue(video.id, "thumbnail_url", e.target.value)} />
-            </div>
-            <div>
-              <span className={label}>Video link (YouTube / Reel / mp4)</span>
-              <input className={field} value={valueOf(video, "video_url")} onChange={(e) => setValue(video.id, "video_url", e.target.value)} />
-            </div>
-            <div>
-              <span className={label}>Tap goes to</span>
+              <span className={label}>Tap goes to (used only when no clip is set)</span>
               <select className={field} value={valueOf(video, "link_href")} onChange={(e) => setValue(video.id, "link_href", e.target.value)}>
                 <option value="/shop">Shop page</option>
                 <option value="/contact">Contact page</option>
@@ -153,6 +228,51 @@ export function VideosTab() {
         ))}
         {!videos.length ? <p className="text-sm text-muted-foreground">No videos yet — add your first slot above.</p> : null}
       </div>
+    </div>
+  );
+}
+
+function MediaControls({
+  value,
+  accept,
+  busy,
+  onUpload,
+  onRemove,
+  removeLabel,
+}: {
+  value: string;
+  accept: string;
+  busy: boolean;
+  onUpload: (file: File) => void;
+  onRemove: () => void;
+  removeLabel: string;
+}) {
+  return (
+    <div className="mt-2 flex flex-wrap items-center gap-2">
+      <label className="inline-flex cursor-pointer items-center gap-2 border border-border px-4 py-2 text-xs tracking-[0.14em] uppercase hover:border-primary">
+        <Upload className="size-3.5" /> {busy ? "Working…" : "Upload from device"}
+        <input
+          type="file"
+          accept={accept}
+          className="hidden"
+          disabled={busy}
+          onChange={(e) => {
+            const f = e.target.files?.[0];
+            e.target.value = "";
+            if (f) onUpload(f);
+          }}
+        />
+      </label>
+      {value ? (
+        <button
+          type="button"
+          onClick={onRemove}
+          disabled={busy}
+          className="border border-border px-4 py-2 text-xs tracking-[0.14em] text-destructive uppercase disabled:opacity-40"
+        >
+          {removeLabel}
+        </button>
+      ) : null}
     </div>
   );
 }

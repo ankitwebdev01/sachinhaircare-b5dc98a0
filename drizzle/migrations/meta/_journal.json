@@ -8,6 +8,13 @@
       "when": 1793294452994,
       "tag": "0000_trending_videos_transformations",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1793374319846,
+      "tag": "0001_media_bucket_admin_policies",
+      "breakpoints": true
     }
   ]
 }
