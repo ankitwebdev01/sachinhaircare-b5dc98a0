@@ -17,6 +17,10 @@ export const waMessage = {
   booking: (name?: string | null) =>
     `Hello ${salon(name)}! I'd like to book a free trial sitting. Please share the available slots.`,
 
+  branch: (city: string, name?: string | null) =>
+    `Hello ${salon(name)}! I'd like to know more about the ${city} branch — timings, services and booking a visit.`,
+
+
   service: (service: string, name?: string | null) =>
     `Hello ${salon(name)}! I'm interested in your "${service}" service. Could you share the details, price and available timings?`,
 
