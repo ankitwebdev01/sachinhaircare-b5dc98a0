@@ -41,7 +41,9 @@ export function BranchesScroll() {
       const scrollable = sec.offsetHeight - window.innerHeight;
       const progress =
         scrollable <= 0 ? 0 : Math.min(1, Math.max(0, -sec.getBoundingClientRect().top / scrollable));
-      const max = Math.max(0, tr.scrollWidth - tr.parentElement.clientWidth);
+      const wrap = tr.parentElement;
+      if (!wrap) return;
+      const max = Math.max(0, tr.scrollWidth - wrap.clientWidth);
       tr.style.transform = `translate3d(${(-progress * max).toFixed(1)}px, 0, 0)`;
       if (bar.current) bar.current.style.transform = `scaleX(${Math.max(progress, 0.02)})`;
     };
