@@ -10,7 +10,6 @@ export const Route = createFileRoute("/branches")({
   head: () => ({
     meta: [
       { title: "Our Branches — Sachin Family Salon" },
-      { description: "12 Sachin Family Salon branches across Silvassa, Gujarat and beyond. Find your nearest studio and book on WhatsApp." } as { description: string; name?: string },
       { name: "description", content: "12 Sachin Family Salon branches across Silvassa, Gujarat and beyond. Find your nearest studio and book on WhatsApp." },
       { property: "og:title", content: "Our Branches — Sachin Family Salon" },
       { property: "og:description", content: "12 salons, one standard of care. Find your nearest branch." },

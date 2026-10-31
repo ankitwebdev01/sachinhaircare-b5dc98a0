@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { ProductCard } from "@/components/site/ProductCard";
 import { SiteLayout } from "@/components/site/SiteLayout";
+import { BranchesScroll } from "@/components/site/BranchesScroll";
 import { TrendingVideos } from "@/components/site/TrendingVideos";
 import { Transformations } from "@/components/site/Transformations";
 import { heroSlidesQuery, productsQuery, settingsQuery, type HeroSlide } from "@/lib/store";
@@ -229,6 +230,10 @@ function HomePage() {
 
       {/* TRANSFORMATIONS */}
       <Transformations />
+
+      {/* BRANCHES — scroll-controlled showcase */}
+      <BranchesScroll />
+
 
       {/* ABOUT */}
       <section className="bg-accent py-20 text-accent-foreground">

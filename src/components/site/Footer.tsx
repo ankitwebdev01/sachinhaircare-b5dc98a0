@@ -45,6 +45,9 @@ export function Footer() {
           <div className="mt-5 flex flex-col gap-3 text-sm">
             <Link to="/shop">Shop all</Link>
             <Link to="/about">Our studio</Link>
+            <Link to="/branches">Branches</Link>
+            <Link to="/gallery">Gallery</Link>
+            <Link to="/blog">Hair care journal</Link>
             <Link to="/contact">Book a trial</Link>
             <Link to="/auth">Owner / customer login</Link>
           </div>
