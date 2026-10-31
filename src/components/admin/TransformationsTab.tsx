@@ -80,7 +80,7 @@ export function TransformationsTab() {
         void deleteMediaFile(url);
         throw error;
       }
-      const old = row ? (row[f] as string | null) : null;
+      const old = row ? ((row as Record<string, string | null>)[f] ?? null) : null;
       if (old) void deleteMediaFile(old);
     },
     onSuccess: (_d, v) => {
@@ -98,7 +98,7 @@ export function TransformationsTab() {
         .update({ [f]: "" } as { before_url?: string; after_url?: string })
         .eq("id", id);
       if (error) throw error;
-      const old = row ? (row[f] as string | null) : null;
+      const old = row ? ((row as Record<string, string | null>)[f] ?? null) : null;
       if (old) void deleteMediaFile(old);
     },
     onSuccess: () => {

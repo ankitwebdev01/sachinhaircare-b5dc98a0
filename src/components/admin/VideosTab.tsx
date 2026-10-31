@@ -85,7 +85,7 @@ export function VideosTab() {
         void deleteMediaFile(url);
         throw error;
       }
-      const old = row ? (row[f] as string | null) : null;
+      const old = row ? ((row as Record<string, string | null>)[f] ?? null) : null;
       if (old) void deleteMediaFile(old);
     },
     onSuccess: (_d, v) => {
@@ -103,7 +103,7 @@ export function VideosTab() {
         .update({ [f]: "" } as { video_url?: string; thumbnail_url?: string })
         .eq("id", id);
       if (error) throw error;
-      const old = row ? (row[f] as string | null) : null;
+      const old = row ? ((row as Record<string, string | null>)[f] ?? null) : null;
       if (old) void deleteMediaFile(old);
     },
     onSuccess: () => {
